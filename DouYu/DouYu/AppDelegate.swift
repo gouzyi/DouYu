@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import Alamofire
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -15,10 +15,40 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        UITabBar.appearance().tintColor = UIColor.orange
+        
+        AppDelegate.validateHTTPS()
         return true
     }
+    // 支持https
+    static func validateHTTPS(){
+        let manager = SessionManager.default
+        manager.delegate.sessionDidReceiveChallenge = { session, challenge in
+            var disposition: URLSession.AuthChallengeDisposition = .performDefaultHandling
+            var credential: URLCredential?
+            
+            if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
+                disposition = URLSession.AuthChallengeDisposition.useCredential
+                credential = URLCredential(trust: challenge.protectionSpace.serverTrust!)
+            } else {
+                if challenge.previousFailureCount > 0 {
+                    disposition = .cancelAuthenticationChallenge
+                } else {
+                    credential = manager.session.configuration.urlCredentialStorage?.defaultCredential(for: challenge.protectionSpace)
+                    
+                    if credential != nil {
+                        disposition = .useCredential
+                    }
+                }
+            }
+            return (disposition, credential)
+        }
+        
+    }
+    
 
+    
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.

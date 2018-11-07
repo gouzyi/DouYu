@@ -1,0 +1,11 @@
+
+platform :ios,'9.0'
+use_frameworks!
+target 'DouYu' do
+pod 'Alamofire'
+pod 'Kingfisher', '~> 4.8.0'
+
+
+end
+
+
