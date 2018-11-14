@@ -12,9 +12,9 @@ class MainTabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let vc = UIViewController()
-        vc.view.backgroundColor = UIColor.orange
-        addChild(vc)
+//        let vc = UIViewController()
+//        vc.view.backgroundColor = UIColor.orange
+//        addChild(vc)
     }
 
 }

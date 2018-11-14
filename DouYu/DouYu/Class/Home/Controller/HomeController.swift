@@ -52,6 +52,7 @@ extension HomeController {
     private func setupUI() {
         setupNavigationBar()
     }
+    
     private func setupNavigationBar() {
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(imageName: "logo")
